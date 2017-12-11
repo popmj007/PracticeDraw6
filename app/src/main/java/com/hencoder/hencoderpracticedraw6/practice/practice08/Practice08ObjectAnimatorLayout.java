@@ -1,8 +1,10 @@
 package com.hencoder.hencoderpracticedraw6.practice.practice08;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
@@ -11,6 +13,7 @@ import com.hencoder.hencoderpracticedraw6.R;
 public class Practice08ObjectAnimatorLayout extends RelativeLayout {
     Practice08ObjectAnimatorView view;
     Button animateBt;
+    private ObjectAnimator mProgress;
 
     public Practice08ObjectAnimatorLayout(Context context) {
         super(context);
@@ -32,13 +35,26 @@ public class Practice08ObjectAnimatorLayout extends RelativeLayout {
         animateBt = (Button) findViewById(R.id.animateBt);
 
         animateBt.setOnClickListener(new OnClickListener() {
+
+
+
             @Override
             public void onClick(View v) {
                 // TODO 在这里处理点击事件，用 ObjectAnimator 播放动画
                 // 1. 用 ObjectAnimator 创建 Animator 对象
                 // 2. 用 start() 执行动画
                 // *. 记得在 Practice08ObjectAnimatorView 中为 progress 添加 setter/ getter 方法！
+                mProgress = ObjectAnimator.ofFloat(view, "progress", 0, 80);
+                mProgress.setDuration(500);
+                mProgress.setInterpolator(new AccelerateInterpolator());
+                mProgress.start();
             }
         });
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        mProgress.cancel();
     }
 }
